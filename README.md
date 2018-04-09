@@ -1,10 +1,10 @@
 # Ruthenium
-<b><i>For a more extensive look into the game, read the [Wiki](https://github.com/kithywithy/Ruthenium/wiki).</i></b>
+<b><i>For a more extensive look into the game, read the [Wiki](https://github.com/KithM/Ruthenium/wiki).</i></b>
 
 ## <b>Table of Contents</b>
-1. [Modification](https://github.com/kithywithy/Ruthenium#modification)
-2. [User Permissions](https://github.com/kithywithy/Ruthenium#user-permissions)
-3. [User Groups](https://github.com/kithywithy/Ruthenium#user-groups)
+1. [Modification](https://github.com/KithM/Ruthenium#modification)
+2. [User Permissions](https://github.com/KithM/Ruthenium#user-permissions)
+3. [User Groups](https://github.com/KithM/Ruthenium#user-groups)
 
 <i>This file and all other saves and data files are located in `AppData\LocalLow\Orion Games\Ruthenium`.</i>
 
