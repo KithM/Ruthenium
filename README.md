@@ -1,4 +1,6 @@
 # Ruthenium
+### <b>[Download the Latest Release of Ruthenium](https://github.com/KithM/Ruthenium/releases/latest)</b>.<br>
+
 <b><i>For a more extensive look into the game, read the [Wiki](https://github.com/KithM/Ruthenium/wiki).</i></b>
 
 ## <b>Table of Contents</b>
