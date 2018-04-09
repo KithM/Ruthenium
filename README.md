@@ -1,8 +1,6 @@
 # Ruthenium
 <b><i>For a more extensive look into the game, read the [Wiki](https://github.com/kithywithy/Ruthenium/wiki).</i></b>
 
-
-
 ## <b>Table of Contents</b>
 1. [Modification](https://github.com/kithywithy/Ruthenium/wiki/Readme#modification)
 2. [User Permissions](https://github.com/kithywithy/Ruthenium/wiki/Readme#user-permissions)
@@ -15,6 +13,9 @@ To modify the game, open any .ruth file (located in the Data folder) in a text e
 
 ## User Permissions
 Permissions are used to grant abilities and commands to certain users that possess them. Permissions for a user can be set by opening the permissions start tag and adding an end tag, similar in how the Username and Password appear in the file. You can then add in as many permissions that are available in the game.
+
+Read more: [Permissions](https://github.com/KithM/Ruthenium/wiki/Permissions)
+[Formatting Permissions](https://github.com/KithM/Ruthenium/wiki/Permissions#formatting-permissions)
 
 ## User Groups
 UserGroups are simple groups that allow or restrict certain actions performed by the user, similar to user permissions. By default, only the UserGroups 'User' and 'Admin' exist. Users with the 'User' UserGroup are given basic permissions, while 'Admin' Users are given administrative permissions, such as deleting accounts, changing passwords, and so on.
