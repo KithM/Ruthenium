@@ -14,7 +14,7 @@ To modify the game, open any .ruth file (located in the Data folder) in a text e
 ## User Permissions
 Permissions are used to grant abilities and commands to certain users that possess them. Permissions for a user can be set by opening the permissions start tag and adding an end tag, similar in how the Username and Password appear in the file. You can then add in as many permissions that are available in the game.
 
-Read more: [Permissions](https://github.com/KithM/Ruthenium/wiki/Permissions)
+Read more: [Permissions](https://github.com/KithM/Ruthenium/wiki/Permissions), 
 [Formatting Permissions](https://github.com/KithM/Ruthenium/wiki/Permissions#formatting-permissions)
 
 ## User Groups
