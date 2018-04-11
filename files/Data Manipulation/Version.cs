@@ -4,7 +4,7 @@ using UnityEngine;
 
 public static class Version {
 
-	static string version = "0.1.406";
+	static string version = "0.1.407";
 
 	public static string GetVersion(){
 		return version;

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine.UI;
 using UnityEngine;
+using System.Collections.Generic;
 
 public class PermissionsManager : MonoBehaviour {
 
@@ -14,14 +15,17 @@ public class PermissionsManager : MonoBehaviour {
 	[Header("Text Elements")]
 	public Text permissionAddText;
 
+	[Header("Dropdown")]
+	public Dropdown dd;
+
 	// Use this for initialization
 	void Start () {
 		HidePermissions ();
 	}
 	
 	public void ShowPermissions(){
-		permissionsPanel.SetActive (true);
 		RefreshPermissions ();
+		permissionsPanel.SetActive (true);
 	}
 	public void HidePermissions(){
 		permissionsPanel.SetActive (false);
@@ -32,6 +36,14 @@ public class PermissionsManager : MonoBehaviour {
 			Destroy (child.gameObject);
 		}
 
+		foreach (User u in GameController.current.dataBase) {	
+			if (u.Username == GameController.current.GetUsername ()) {
+				GameController.current.SetPermissions (u.Permissions);
+			}
+		}
+
+		Debug.Log(GameController.current.permissions.Count + " permissions loaded.");
+
 		foreach (string perm in GameController.current.permissions) {
 			GameObject pGO = Instantiate (permissionPrefab, bodyPanel.transform);
 
@@ -39,6 +51,23 @@ public class PermissionsManager : MonoBehaviour {
 			Button pGOb = pGO.GetComponentInChildren<Button> ();
 			pGOb.onClick.AddListener(delegate{ DeletePermission(perm); }); //AddListener (DeletePermission(perm));
 			pGOt.text = perm;
+		}
+			
+		dd.ClearOptions ();
+
+		List<string> usersList = new List<string> ();
+
+		foreach (User user in GameController.current.dataBase) {
+				usersList.Add (user.Username.ToString());
+		}
+
+		dd.AddOptions (usersList);
+
+		for (int i = 0; i < dd.options.Count; i++) {
+			if(dd.options[i].text == GameController.current.GetUsername()){
+				dd.value = i;
+				break;
+			}
 		}
 	}
 

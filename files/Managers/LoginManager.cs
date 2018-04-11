@@ -225,9 +225,10 @@ public class LoginManager : MonoBehaviour {
 			}
 		}
 
+		GameController.nm.ShowNotification ("Reloading.");
+
 		if(count < 1){
 			//The user no longer exists, so we should logout
-			GameController.nm.ShowNotification ("Reloading.");
 			Logout ();
 			return;
 		}

@@ -13,7 +13,8 @@ public class Profile : MonoBehaviour {
 	public Image profilePicture;
 
 	[Header("Text Elements")]
-	public Text biotext;
+	public Text bioText;
+	public Text userGroupText;
 
 	[Header("EDITMODE")]
 	public InputField EDITMODE_biotext;
@@ -25,46 +26,20 @@ public class Profile : MonoBehaviour {
 	
 	public void ShowProfile(){
 
-		string permissionsstring = null;
-
-		permissionsstring = "";
-		foreach (string perm in GameController.current.permissions) {
-			if (permissionsstring != "") {
-				permissionsstring = permissionsstring + ", " + perm;
-			} else {
-				permissionsstring = perm;
-			}
+		if (GameController.current.GetBio () != "" && GameController.current.GetBio () != null) {
+			// We have all of our profile information, don't substitute anything
+			bioText.text = "<b>Bio:</b> " + GameController.current.GetBio ();	
+		} else {
+			// We dont have a bio right now, so substitute it with "This user does not have a bio.", as it is default anyway
+			bioText.text = "<b>Bio:</b> " + "This user does not have a bio.";
 		}
 
+		if (GameController.current.GetUserGroup () != "" && GameController.current.GetUserGroup () != null) {
 			// We have all of our profile information, don't substitute anything
-		if (permissionsstring != null && permissionsstring != "" && GameController.current.GetBio () != "" && GameController.current.GetBio () != null) {
-			biotext.text = "<b>Bio:</b> " + GameController.current.GetBio () + "\n\n" +
-			"<b>UserGroup:</b> " + GameController.current.GetUserGroup () + "\n" +
-			"<b>Permissions:</b> " + permissionsstring;
-		
-			// We dont have any permissions right now, so substitute it with "None", as it is default anyway
-		} else if (permissionsstring == null || permissionsstring == "") {
-			biotext.text = "<b>Bio:</b> " + GameController.current.GetBio () + "\n\n" +
-			"<b>UserGroup:</b> " + GameController.current.GetUserGroup () + "\n" +
-			"<b>Permissions:</b> " + "None";
-		
-			// We dont have a userGroup right now, so substitute it with "User", as it is default anyway
-		} else if (GameController.current.GetUserGroup () == "" || GameController.current.GetUserGroup () == null) {
-			biotext.text = "<b>Bio:</b> " + GameController.current.GetBio () + "\n\n" +
-			"<b>UserGroup:</b> " + "User" + "\n" +
-			"<b>Permissions:</b> " + permissionsstring;
-			
-			// We dont have a bio right now, so substitute it with "This user does not have a bio.", as it is default anyway
-		} else if (GameController.current.GetBio () == "" || GameController.current.GetBio () == null) {
-			biotext.text = "<b>Bio:</b> " + "This user does not have a bio." + "\n\n" +
-			"<b>UserGroup:</b> " + GameController.current.GetUserGroup () + "\n" +
-			"<b>Permissions:</b> " + permissionsstring;
-			
-			// We dont have a anything right now, so substitute everything with the defaults
+			userGroupText.text = GameController.current.GetUserGroup () + "\n(" + GameController.current.GetUserID () + ")";
 		} else {
-			biotext.text = "<b>Bio:</b> " + "This user does not have a bio." + "\n\n" +
-			"<b>UserGroup:</b> " + "User" + "\n" +
-			"<b>Permissions:</b> " + "None";
+			// We dont have a uID right now, so substitute it with User, as it is default anyway
+			userGroupText.text = "User";
 		}
 
 		//TODO:
@@ -80,7 +55,7 @@ public class Profile : MonoBehaviour {
 		profilePanel.SetActive (true);
 	}
 	public void HideProfile(){
-		biotext.text = "This user is offline.";
+		bioText.text = "This user is offline.";
 
 		profilePanel.SetActive (false);
 		editModeProfilePanel.SetActive (false);

@@ -27,7 +27,7 @@ public class SaveLoad : MonoBehaviour {
 
 		if(File.Exists(filePath) == true){
 			// TODO: Do file override dialog box
-			Debug.LogError ("SaveLoad::StartSave: File already exists! File has been overriden.");
+			Debug.Log ("SaveLoad::StartSave: File already exists! File has been overriden.");
 		}
 
 		GameController.nm.ShowNotification ("Saving...");
