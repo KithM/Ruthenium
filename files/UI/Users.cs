@@ -23,7 +23,7 @@ public class Users : MonoBehaviour {
 		int n = 0;
 
 		foreach (User user in GameController.current.dataBase) {
-			if(user.Permissions.Contains("User.Type.Hidden") && !GameController.current.permissions.Contains("Settings.See.Hidden")){
+			if(user.Permissions.Contains("user.type.hidden") && !GameController.current.permissions.Contains("settings.see.hidden")){
 				continue;
 			}
 			if (n > 0 && user.Username != GameController.current.GetUsername ()) {

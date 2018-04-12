@@ -185,16 +185,16 @@ public class LoginManager : MonoBehaviour {
 
 	public void DeleteCurrentUser(){
 		// TODO
-		if(GameController.current.permissions.Contains("User.Type.Permanent")){
+		if(GameController.current.permissions.Contains("user.type.permanent")){
 			string log1 = "LoginManager::DeleteCurrentUser: Failed to delete the account \'" + GameController.current.GetUsername() + "\'. (insufficient permissions)";
 			Logger.WriteLog (log1);
-			GameController.nm.ShowNotification ("Insufficient permissions: User.Type.Permanent users are not deletable.");
+			GameController.nm.ShowNotification ("Insufficient permissions: user.type.permanent users are not deletable.");
 			return;
 		}
-		if(!GameController.current.permissions.Contains("Settings.Manage.Self")){
+		if(!GameController.current.permissions.Contains("settings.manage.self")){
 			string log1 = "LoginManager::DeleteCurrentUser: Failed to delete the account \'" + GameController.current.GetUsername() + "\'. (insufficient permissions)";
 			Logger.WriteLog (log1);
-			GameController.nm.ShowNotification ("Insufficient permissions: Settings.Manage.Self.");
+			GameController.nm.ShowNotification ("Insufficient permissions: settings.manage.self.");
 			return;
 		}
 

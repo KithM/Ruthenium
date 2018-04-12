@@ -54,30 +54,26 @@ public class Manage : MonoBehaviour {
 			passwordStrength.fillAmount -= 0.125f;
 		}
 
-		if (changePassword.text.Contains ("#") ||
-		   changePassword.text.Contains ("$") ||
-		   changePassword.text.Contains ("!") ||
-		   changePassword.text.Contains ("@") ||
-		   changePassword.text.Contains ("%") ||
-		   changePassword.text.Contains ("^") ||
-		   changePassword.text.Contains ("&") ||
-		   changePassword.text.Contains ("*") ||
-		   changePassword.text.Contains ("(") ||
-		   changePassword.text.Contains (")") ||
-		   changePassword.text.Contains ("-") ||
-		   changePassword.text.Contains ("_") ||
-		   changePassword.text.Contains ("=") ||
-		   changePassword.text.Contains ("+")) {
-			passwordStrength.fillAmount += 0.25f;
-		}
-		if (changePassword.text.Contains ("h")) {
-			passwordStrength.fillAmount += 0.11f;
-		}
-		if (changePassword.text.Contains ("w") || changePassword.text.Contains ("x")) {
-			passwordStrength.fillAmount += 0.1f;
-		}
-		if (changePassword.text.Contains ("y") || changePassword.text.Contains ("z") || changePassword.text.Contains ("q")) {
-			passwordStrength.fillAmount += 0.12f;
+		foreach(char c in changePassword.text){
+			if (char.IsControl (c)) {
+				passwordStrength.fillAmount += 0.125f;
+			} else if (char.IsDigit (c)) {
+				passwordStrength.fillAmount += 0.025f;
+			} else if (char.IsHighSurrogate (c)) {
+				passwordStrength.fillAmount += 0.05f;
+			} else if (char.IsLowSurrogate (c)) {
+				passwordStrength.fillAmount += 0.05f;
+			} else if (char.IsSurrogate(c)){
+				passwordStrength.fillAmount += 0.0325f;
+			} else if (char.IsPunctuation(c)){
+				passwordStrength.fillAmount += 0.075f;
+			} else if (char.IsSeparator(c)){
+				passwordStrength.fillAmount += 0.0325f;
+			} else if (char.IsSymbol(c)){
+				passwordStrength.fillAmount += 0.0225f;
+			} else if (char.IsWhiteSpace(c)){
+				passwordStrength.fillAmount += 0.025f;
+			}
 		}
 
 		// COLORS
@@ -93,7 +89,7 @@ public class Manage : MonoBehaviour {
 	}
 
 	public void ShowMenu () {
-		if(!GameController.current.permissions.Contains("Settings.Manage.Self")){
+		if(!GameController.current.permissions.Contains("settings.manage.self")){
 			changeUsername.readOnly = true;
 			changePassword.readOnly = true;
 		}
@@ -112,10 +108,10 @@ public class Manage : MonoBehaviour {
 	}
 
 	public void SaveChanges(){
-		if(!GameController.current.permissions.Contains("Settings.Manage.Self")){
+		if(!GameController.current.permissions.Contains("settings.manage.self")){
 			string log1 = "Manage::SaveChanges: Cannot make changes to the account \'" + GameController.current.GetUsername() + "\'. (insufficient permissions)";
 			Logger.WriteLog (log1);
-			GameController.nm.ShowNotification ("Insufficient permissions: Settings.Manage.Self.");
+			GameController.nm.ShowNotification ("Insufficient permissions: settings.manage.self.");
 			return;
 		}
 
