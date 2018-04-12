@@ -15,7 +15,7 @@ public class Game : IXmlSerializable {
 	public int userID { get; protected set; } // Our userID is only used for saving the default XML
 	public string bio { get; protected set; } // The Biography of the user, or whatever the user sets it to
 	public string userGroup { get; protected set; } // TODO: Our user group. Can only be User or Admin
-	public List<string> permissions { get; protected set; } // TODO: Our user privelages. Will hold all of our special permissions we can do when we are logged in
+	public List<string> permissions { get; protected set; } // Our user privelages. Will hold all of our special permissions we can do when we are logged in
 
 	// Our database is filled in every time we start the game using the XML file. It holds our username and our associated password, and
 	// anything else we need for our user
@@ -113,41 +113,65 @@ public class Game : IXmlSerializable {
 		} else {
 			// DEFAULT (NO FILE)
 			User user1 = new User ("default", "password");
+
+			List<string> adminperms = new List<string> ();
+			adminperms.Add ("permissions.add.self");
+			adminperms.Add ("permissions.remove.self");
+			adminperms.Add ("permissions.add.others");
+			adminperms.Add ("permissions.remove.others");
+
+			User user2 = new User ("admin", "password", "This user does not have a bio.", "Admin", adminperms);
 			dataBase.Add (user1);
+			dataBase.Add (user2);
 
-			// User Start
-			writer.WriteStartElement("User");
+			foreach (User user in dataBase) {
+				string username = user.Username;
+				string password = user.Password;
+				string bio = user.Bio;
+				string usergroup = user.UserGroup;
 
-			// Username
-			writer.WriteStartElement("Username");
-			writer.WriteString (user1.Username);
-			writer.WriteEndElement ();
+				// User Start
+				writer.WriteStartElement ("User");
 
-			// Password
-			writer.WriteStartElement("Password");
-			writer.WriteString (user1.Password);
-			writer.WriteEndElement ();
+				// Username
+				writer.WriteStartElement ("Username");
+				writer.WriteString (username);
+				writer.WriteEndElement ();
 
-			// Bio
-			writer.WriteStartElement("Bio");
-			writer.WriteString (user1.Bio);
-			writer.WriteEndElement ();
+				// Password
+				writer.WriteStartElement ("Password");
+				writer.WriteString (password);
+				writer.WriteEndElement ();
 
-			// Privelages
-			writer.WriteStartElement("UserGroup");
-			writer.WriteString (user1.UserGroup);
-			writer.WriteEndElement ();
+				// Bio
+				writer.WriteStartElement ("Bio");
+				writer.WriteString (bio);
+				writer.WriteEndElement ();
 
-			// Permissions
-			writer.WriteStartElement("Permissions");
-			writer.WriteEndElement ();
+				// Privelages
+				writer.WriteStartElement ("UserGroup");
+				writer.WriteString (usergroup);
+				writer.WriteEndElement ();
 
-			// User End
-			writer.WriteEndElement();
+				// Permissions
+				writer.WriteStartElement ("Permissions");
+				if (user.Permissions != null && user.Permissions.Count > 0) {
+					foreach (string perm in user.Permissions) {
+						writer.WriteStartElement ("Permission");
+						writer.WriteString (perm);
+						writer.WriteEndElement ();
+					}
+				}
+				writer.WriteEndElement ();
+
+				// User End
+				writer.WriteEndElement ();
+			}
 		}
 	}
 	public void ReadXml(XmlReader reader){
 		// TODO: EVERYTHING!!!!!
+		bool doSaveAfterLoad = false;
 
 		Debug.Log ("Game::ReadXml");
 		reader.Read ();
@@ -178,12 +202,36 @@ public class Game : IXmlSerializable {
 
 				if (reader.ReadToDescendant ("Username")) {
 					xmlusername = reader.ReadString ();
+					//TODO:
+					if(xmlusername.Length > 25){
+						Debug.LogError ("Game::ReadXml: The specified username \'<b>" + xmlusername + "</b>\' is too long (" + xmlusername.Length + " char).");
+						Logger.WriteLog ("Game::ReadXml: The specified username \'" + xmlusername + "\' is too long (" + xmlusername.Length + " char).");
+						xmlusername = xmlusername.Substring (0, 25);
+
+						doSaveAfterLoad = true;
+					}
 				}
 				if (reader.ReadToNextSibling ("Password")) {
 					xmlpassword = reader.ReadString ();
+					//TODO:
+					if(xmlpassword.Length > 50){
+						Debug.LogError ("Game::ReadXml: The specified password for user \'<b>" + xmlusername + "</b>\' is too long (" + xmlpassword.Length + " char).");
+						Logger.WriteLog ("Game::ReadXml: The specified password for user \'" + xmlusername + "\' is too long (" + xmlpassword.Length + " char).");
+						xmlpassword = xmlpassword.Substring (0, 50);
+
+						doSaveAfterLoad = true;
+					}
 				}
 				if (reader.ReadToNextSibling ("Bio")) {
 					xmlbio = reader.ReadString ();
+					//TODO:
+					if(xmlbio.Length > 300){
+						Debug.LogError ("Game::ReadXml: The specified bio for user \'<b>" + xmlusername + "</b>\' is too long (" + xmlbio.Length + " char).");
+						Logger.WriteLog ("Game::ReadXml: The specified bio for user \'" + xmlusername + "\' is too long (" + xmlbio.Length + " char).");
+						xmlbio = xmlbio.Substring (0, 300);
+
+						doSaveAfterLoad = true;
+					}
 				}
 				if (reader.ReadToNextSibling ("UserGroup")) {
 					xmlprivelages = reader.ReadString ();
@@ -214,6 +262,12 @@ public class Game : IXmlSerializable {
 		}
 
 		reader.Close ();
+
+		if (doSaveAfterLoad == true) {
+			// TODO: May need to move this?
+			GameController.sl.StartSave ();
+		}
+
 		Debug.Log ("Game::ReadXml: Successfully loaded the data file \'<b>data.ruth</b>\' with " + dataBase.Count + " users.");
 
 		string log1 = "Game::ReadXml: Successfully loaded the data file \'data.ruth\' with " + dataBase.Count + " users.";

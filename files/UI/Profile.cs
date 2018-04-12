@@ -45,7 +45,7 @@ public class Profile : MonoBehaviour {
 		//TODO:
 		string filePath = System.IO.Path.Combine ( SaveLoad.ImagesBasePath(), GameController.current.GetUsername() + ".png" );
 
-		Texture2D ppT = LoadPNG (filePath);
+		Texture2D ppT = LoadTextureFromFile (filePath);
 		if (ppT != null) {
 			Rect ppR = new Rect (0, 0, ppT.width, ppT.height);
 			Sprite ppS = Sprite.Create (ppT, ppR, profilePicture.rectTransform.pivot);
@@ -87,21 +87,35 @@ public class Profile : MonoBehaviour {
 		ShowProfile ();
 	}
 
-	public Texture2D LoadPNG(string filePath) {
+	public Texture2D LoadTextureFromFile(string filePath) {
 
 		Texture2D tex = null;
 		byte[] fileData;
 
+		// default blank texture used for saving, if loading it will just be overrided
+		tex = new Texture2D(100, 100, TextureFormat.ARGB32, false);
+
 		if (File.Exists(filePath))     {
 			fileData = File.ReadAllBytes(filePath); 
 
-			tex = new Texture2D(2, 2, TextureFormat.ARGB32, false);
-
 			tex.LoadImage(fileData); //..this will auto-resize the texture dimensions
-			Debug.Log ("Profile::LoadPNG: Loaded file \'<b>" + filePath + "</b>\'.");
+			Debug.Log ("Profile::LoadTextureFromFile: Loaded file \'<b>" + filePath + "</b>\'.");
 		} else {
-			Debug.LogError ("Profile::LoadPNG: Failed to load file \'<b>" + filePath + "</b>\'.");
+			Debug.Log ("Profile::LoadTextureFromFile: Failed to load file \'<b>" + filePath + "</b>\'.");
+			SaveTextureToFile (tex, filePath);
 		}
 		return tex;
+	}
+
+	public void SaveTextureToFile(Texture2D tex, string filePath){
+		var bytes = tex.EncodeToPNG();
+
+		FileStream file = File.Create (filePath);
+		BinaryWriter binary = new BinaryWriter (file);
+
+		binary.Write(bytes);
+		file.Close();
+
+		Debug.Log ("Profile::SaveTextureToFile: Created file \'<b>" + filePath + "</b>\'.");
 	}
 }

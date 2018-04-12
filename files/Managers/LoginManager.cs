@@ -117,8 +117,16 @@ public class LoginManager : MonoBehaviour {
 			return;
 		}
 
-		//User user = new User (u, p);
-		//GameController.current.dataBase.Contains(user)
+		if(u.Length > 25){
+			// TODO
+			warningText.text = "Username is too long (" + u.Length + " char).";
+			return;
+		}
+		if(p.Length > 50){
+			// TODO
+			warningText.text = "Password is too long (" + p.Length + " char).";
+			return;
+		}
 
 		int count = 0;
 

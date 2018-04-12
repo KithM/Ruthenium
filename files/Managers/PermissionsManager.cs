@@ -80,6 +80,10 @@ public class PermissionsManager : MonoBehaviour {
 		// Display our currently selected user's permissions
 		foreach (User user in GameController.current.dataBase) {
 			if (user == GameController.current.dataBase [dd.value]) {
+				if(user.Permissions == null){
+					// TODO
+					user.Permissions = new List<string>();
+				}
 				foreach (string perm in user.Permissions) {
 					GameObject pGO = Instantiate (permissionPrefab, bodyPanel.transform);
 

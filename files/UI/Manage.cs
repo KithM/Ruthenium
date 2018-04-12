@@ -129,6 +129,17 @@ public class Manage : MonoBehaviour {
 			return;
 		}
 
+		if(u.Length > 25){
+			// TODO
+			warningText.text = "Username is too long (" + u.Length + " char).";
+			return;
+		}
+		if(p.Length > 50){
+			// TODO
+			warningText.text = "Password is too long (" + p.Length + " char).";
+			return;
+		}
+
 		for (int i = 0; i < GameController.current.dataBase.Count; i++) {
 			if (GameController.current.dataBase [i].Username == GameController.current.GetUsername ()) {
 				GameController.current.dataBase [i].Username = u;
