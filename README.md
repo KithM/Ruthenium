@@ -31,7 +31,7 @@ If your current user has the permission node `permissions.add.others` and/or `pe
 
 <b>Click the Manage icon</b>. You will see a box that displays your current `Username`, `Password`, and `Session ID`. You will also notice that your password has a colored bar underneath of it. The bar represents your password's strength is regards to its length and/or what characters are used. Passwords that involve special characters and uncommon symbols are always much stronger than simple passwords.
 
-If your current user has the permission node `settings.manage.self`, you will be able to edit your `Username` and `Password` in the input boxes that display them. Keep in mind that you will not be able to have an empty `Username` or `Password`.
+If your current user has the permission node `settings.manage.self`, you will be able to edit your `Username` and `Password` in the input boxes that display them. Keep in mind that you will not be able to have an empty `Username` or `Password`. If you want to <i>delete your current user</i>, you can <b>click the delete button</b> and you will be logged out of the account and it will be removed from the database.
 
 ![alt text](https://i.imgur.com/Q9yDreT.png "User Management")
 
