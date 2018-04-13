@@ -35,7 +35,7 @@ If your current user has the permission node `settings.manage.self`, you will be
 
 ![alt text](https://i.imgur.com/Q9yDreT.png "User Management")
 
-<b>Click the Reload icon</b>. This is useful for updating the database on-the-fly, such as if you want to keep the game open when makign changes to the `data.ruth` file or other files.
+<b>Click the Reload icon</b>. This is useful for updating the database on-the-fly, such as if you want to keep the game open when making changes to the `data.ruth` file or other files.
 
 ## Contribute
 - <b>[Submit a bug or problem in the current build](https://github.com/KithM/Ruthenium/issues/new)</b>
