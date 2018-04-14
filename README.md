@@ -3,6 +3,8 @@
 ## Summary
 Ruthenium is a free open-source computer simulation game, which allows users to operate and configure a virtual system to their will, and features a collective database of users, of which can be managed and modified, hold [permissions](https://github.com/KithM/Ruthenium/wiki/Permissions), and more, all of which are modifiable inside and outside of the game, and allows the player to customize their gameplay as they want.
 
+#### <b>Learn more: [Ruthenium Wiki](https://github.com/KithM/Ruthenium/wiki).</b>
+
 ## Installation
 <b>[Download the latest release of Ruthenium](https://github.com/KithM/Ruthenium/releases/latest)</b><br>
 
@@ -26,6 +28,8 @@ Log-in to the `default` or `admin` user and you will be welcomed with a desktop,
 If your current user has the permission node `permissions.add.self` and/or `permissions.remove.self`, you will be able to change your own permissions. You can remove permissions by clicking the red <i>X</i> icon, and you can add permissions by typing in the permission node (case sensitive) into the large input box and hitting <b>Add Permission</b>.
 
 If your current user has the permission node `permissions.add.others` and/or `permissions.remove.others`, you will also be able to change other users' permissions.
+
+#### <b>Read more: [Permissions](https://github.com/KithM/Ruthenium/wiki/Permissions), [Formatting Permissions](https://github.com/KithM/Ruthenium/wiki/Permissions#formatting-permissions), [Adding Permissions](https://github.com/KithM/Ruthenium/wiki/Permissions#adding-permissions-within-the-xml-file).</b>
 
 ![alt text](https://i.imgur.com/pQXXJoK.png "Permission Manager")
 
