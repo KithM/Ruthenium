@@ -15,6 +15,7 @@ public class GameController : MonoBehaviour {
 	public static SaveLoad sl;
 	public static NotificationManager nm;
 	public static PermissionsManager pm;
+	public static LoginManager lm;
 
 	// Use this for initialization
 	void Awake () {
@@ -22,6 +23,7 @@ public class GameController : MonoBehaviour {
 		sl = FindObjectOfType<SaveLoad> ();
 		nm = FindObjectOfType<NotificationManager> ();
 		pm = FindObjectOfType<PermissionsManager> ();
+		lm = FindObjectOfType<LoginManager> ();
 
 		// Create a new game
 		current = new Game (null, null);

@@ -43,13 +43,24 @@ public class PermissionsManager : MonoBehaviour {
 	}
 
 	public void RefreshPermissions(){
+		// We need to set our current game permissions EQUAL to our current USER's permissions if they have been updated, 
+		// as we are ONLY added and removing permissions from our USER permissions.
+		foreach (User user in GameController.current.dataBase) {
+			if (user.Username == GameController.current.GetUsername()) {
+				GameController.current.SetPermissions (user.Permissions);
+			}
+		}
+
 		// This removes the permissions that were left when we closed the permissions (they might be updated)
 		foreach (Transform child in bodyPanel.transform){
 			Destroy (child.gameObject);
 		}
-
-		// TODO??
+			
+		// Update our current permissions list
 		ViewUserPermissions ();
+
+		// Clear our permission text box
+		permissionAddText.text = "";
 
 		// This creates our dropdown list for selecting users, and it will be updated whenever we open the permissions manager
 		// By default, when we close and open the permissions manager, we will be viewing OUR OWN permissions, not where we left off
@@ -122,8 +133,10 @@ public class PermissionsManager : MonoBehaviour {
 				// Keep track of what user we have modified
 				lastUserIndex = dd.value;
 
-				RefreshPermissions ();
+				// FIXME: Permissions aren't "existing" when we try to remove permissions from other users
 				GameController.sl.StartSave ();
+				GameController.lm.ReloadKeepWindows ();
+				RefreshPermissions ();
 			}
 		}
 	}
@@ -172,8 +185,10 @@ public class PermissionsManager : MonoBehaviour {
 				// Keep track of what user we have modified
 				lastUserIndex = dd.value;
 
-				RefreshPermissions ();
+				// FIXME: Permissions aren't "existing" when we try to add permissions to other users
 				GameController.sl.StartSave ();
+				GameController.lm.ReloadKeepWindows ();
+				RefreshPermissions ();
 			}
 		}
 	}

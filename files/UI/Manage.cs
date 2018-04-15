@@ -92,6 +92,9 @@ public class Manage : MonoBehaviour {
 		if(!GameController.current.permissions.Contains("settings.manage.self")){
 			changeUsername.readOnly = true;
 			changePassword.readOnly = true;
+		} else if (GameController.current.permissions.Contains("settings.manage.self")){
+			changeUsername.readOnly = false;
+			changePassword.readOnly = false;
 		}
 
 		managePanel.SetActive (true);

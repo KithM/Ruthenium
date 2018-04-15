@@ -98,7 +98,7 @@ public class LoginManager : MonoBehaviour {
 				Logger.WriteLog (log);
 			}
 
-			continue;				
+					
 		}
 	}
 
@@ -163,9 +163,7 @@ public class LoginManager : MonoBehaviour {
 		GameController.current.dataBase.Add (user1);
 		GameController.sl.StartSave ();
 
-		// Switch from our login panel to the desktop screen
-		loginPanel.SetActive (false);
-		desktopPanel.SetActive (true);
+		ShowDesktop ();
 	}
 
 	public void Logout(){
@@ -186,6 +184,15 @@ public class LoginManager : MonoBehaviour {
 		string log1 = "LoginManager::Logout: Logged out of the account \'" + u + "\'.";
 		Logger.WriteLog (log1);
 
+		ShowLogin ();
+	}
+
+	public void ShowDesktop(){
+		// Switch from our desktop screen to the login panel
+		loginPanel.SetActive (false);
+		desktopPanel.SetActive (true);
+	}
+	public void ShowLogin(){
 		// Switch from our login panel to the desktop screen
 		loginPanel.SetActive (true);
 		desktopPanel.SetActive (false);
@@ -238,6 +245,26 @@ public class LoginManager : MonoBehaviour {
 		if(count < 1){
 			//The user no longer exists, so we should logout
 			Logout ();
+		}
+
+		// The user still exists so we can stay logged in
+	}
+
+	public void ReloadKeepWindows(){
+		GameController.sl.StartLoad ();
+
+		int count = 0;
+		for(int i = 0; i < GameController.current.dataBase.Count; i++){
+			if(GameController.current.dataBase[i].Username == GameController.current.GetUsername()) {
+				count++;
+			}
+		}
+
+		GameController.nm.ShowNotification ("Reloading.");
+
+		if(count < 1){
+			//The user no longer exists, so we should logout
+			Logout ();
 			return;
 		}
 
@@ -246,7 +273,7 @@ public class LoginManager : MonoBehaviour {
 		
 	// Here should be the normal "DeleteUser" function ,for deleting specific users
 
-	public void ExitGame(){
+	public static void ExitGame(){
 		Application.Quit ();
 	}
 }
