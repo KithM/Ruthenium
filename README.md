@@ -1,7 +1,12 @@
 ![alt text](https://i.imgur.com/673fMPp.png "Ruthenium Logo")
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/c56cb271c2fa498e95f77f0a9ee364fb)](https://www.codacy.com/app/KithM/Ruthenium?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=KithM/Ruthenium&amp;utm_campaign=Badge_Grade)
+[![BCH compliance](https://bettercodehub.com/edge/badge/KithM/Ruthenium?branch=master)](https://bettercodehub.com/)
+
 ## Summary
 Ruthenium is a free open-source computer simulation game, which allows users to operate and configure a virtual system to their will, and features a collective database of users, of which can be managed and modified, hold [permissions](https://github.com/KithM/Ruthenium/wiki/Permissions), and more, all of which are modifiable inside and outside of the game, and allows the player to customize their gameplay as they want.
+
+#### <b>Learn more: [Ruthenium Wiki](https://github.com/KithM/Ruthenium/wiki).</b>
 
 ## Installation
 <b>[Download the latest release of Ruthenium](https://github.com/KithM/Ruthenium/releases/latest)</b><br>
@@ -27,6 +32,8 @@ If your current user has the permission node `permissions.add.self` and/or `perm
 
 If your current user has the permission node `permissions.add.others` and/or `permissions.remove.others`, you will also be able to change other users' permissions.
 
+#### <b>Read more: [Permissions](https://github.com/KithM/Ruthenium/wiki/Permissions), [Formatting Permissions](https://github.com/KithM/Ruthenium/wiki/Permissions#formatting-permissions), [Adding Permissions](https://github.com/KithM/Ruthenium/wiki/Permissions#adding-permissions-within-the-xml-file).</b>
+
 ![alt text](https://i.imgur.com/pQXXJoK.png "Permission Manager")
 
 <b>Click the Manage icon</b>. You will see a box that displays your current `Username`, `Password`, and `Session ID`. You will also notice that your password has a colored bar underneath of it. The bar represents your password's strength is regards to its length and/or what characters are used. Passwords that involve special characters and uncommon symbols are always much stronger than simple passwords.
@@ -35,7 +42,7 @@ If your current user has the permission node `settings.manage.self`, you will be
 
 ![alt text](https://i.imgur.com/Q9yDreT.png "User Management")
 
-<b>Click the Reload icon</b>. This is useful for updating the database on-the-fly, such as if you want to keep the game open when makign changes to the `data.ruth` file or other files.
+<b>Click the Reload icon</b>. This is useful for updating the database on-the-fly, such as if you want to keep the game open when making changes to the `data.ruth` file or other files.
 
 ## Contribute
 - <b>[Submit a bug or problem in the current build](https://github.com/KithM/Ruthenium/issues/new)</b>
