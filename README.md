@@ -1,6 +1,7 @@
 ![alt text](https://i.imgur.com/673fMPp.png "Ruthenium Logo")
 
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/c56cb271c2fa498e95f77f0a9ee364fb)](https://www.codacy.com/app/KithM/Ruthenium?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=KithM/Ruthenium&amp;utm_campaign=Badge_Grade)
+[![BCH compliance](https://bettercodehub.com/edge/badge/KithM/Ruthenium?branch=master)](https://bettercodehub.com/)
 
 ## Summary
 Ruthenium is a free open-source computer simulation game, which allows users to operate and configure a virtual system to their will, and features a collective database of users, of which can be managed and modified, hold [permissions](https://github.com/KithM/Ruthenium/wiki/Permissions), and more, all of which are modifiable inside and outside of the game, and allows the player to customize their gameplay as they want.
