@@ -24,6 +24,8 @@ public class ConsoleManager : MonoBehaviour {
 			return;
 		}
 
+		commandList.text = GameController.current.GetUserGroup().ToUpper() + " " + GameController.current.GetUsername() + "@" + GameController.current.GetUserID() + ": \n";
+
 		commandList.text = commandList.text + "\n> " + cmd;
 		commandText.text = "";
 
@@ -48,7 +50,7 @@ public class ConsoleManager : MonoBehaviour {
 			);
 		} else if (cmd.ToLower ().StartsWith ("p list")) {
 			// Use regex to split the string into two parts
-			string user = Regex.Replace (cmd, "(\\w+\\ \\w+\\ )", "");
+			string user = Regex.Replace (cmd, "(.+\\ .+\\ )", "");
 
 			// Is the string null, empty?
 			if (user == " " || user == null || user == "") {
@@ -83,13 +85,39 @@ public class ConsoleManager : MonoBehaviour {
 			Regex regex_perm = new Regex(pattern);
 			string perm = regex_perm.Replace(input, substitution_perm);
 
+			// Does the permission exist? (case sensitive)
+			if (Permissions.IsValidPermission(perm) == false) {
+				Debug.LogError ("PermissionsManager::AddPermission: Invalid permission \'<b>" + perm + "</b>\'.");
+				Logger.WriteLog ("PermissionsManager::AddPermission: Invalid permission \'" + perm + "\'.");
+				SendResponse ("Invalid permission: " + perm + ".");
+				return;
+			}
+
+			// Do we have permission to add to OUR OWN permissions?
+			if(!GameController.current.permissions.Contains("permissions.add.self") && ( GameController.current.GetUsername() == user )){
+				string log1 = "PermissionsManager::DeletePermission: Failed to add permissions for \'" + user + "\'. (insufficient permissions)";
+				Logger.WriteLog (log1);
+				SendResponse ("Insufficient permissions: permissions.add.self.");
+				return;
+			}
+			// Do we have permission to add to OTHERS permissions?
+			if(!GameController.current.permissions.Contains("permissions.add.others") && ( GameController.current.GetUsername() != user )){
+				string log1 = "PermissionsManager::DeletePermission: Failed to add permissions for \'" + user + "\'. (insufficient permissions)";
+				Logger.WriteLog (log1);
+				SendResponse ("Insufficient permissions: permissions.add.others.");
+				return;
+			}
+
 			int c = 0;
 			foreach(User u in GameController.current.dataBase){
 				if(u.Username == user){
 					if (Permissions.IsValidPermission (perm) && u.Permissions.Contains (perm) == false) {
 						u.Permissions.Add (perm);
 						SendResponse ("Added permission \'" + perm + "\' to \'" + user + "\'.");
+
 						GameController.sl.StartSave ();
+						GameController.lm.ReloadKeepWindows ();
+						GameController.pm.RefreshPermissions ();
 					} else if (Permissions.IsValidPermission (perm) == false) {
 						SendResponse ("Invalid permission \'" + perm + "\'.");
 					} else if (u.Permissions.Contains (perm)) {
@@ -117,13 +145,31 @@ public class ConsoleManager : MonoBehaviour {
 			Regex regex_perm = new Regex(pattern);
 			string perm = regex_perm.Replace(input, substitution_perm);
 
+			// Do we have permission to remove OUR OWN permissions?
+			if(!GameController.current.permissions.Contains("permissions.remove.self") && ( GameController.current.GetUsername() == user )){
+				string log1 = "PermissionsManager::DeletePermission: Failed to delete permissions for \'" + user + "\'. (insufficient permissions)";
+				Logger.WriteLog (log1);
+				SendResponse ("Insufficient permissions: permissions.remove.self.");
+				return;
+			}
+			// Do we have permission to remove OTHERS permissions?
+			if(!GameController.current.permissions.Contains("permissions.remove.others") && ( GameController.current.GetUsername() != user )){
+				string log1 = "PermissionsManager::DeletePermission: Failed to delete permissions for \'" + user + "\'. (insufficient permissions)";
+				Logger.WriteLog (log1);
+				SendResponse ("Insufficient permissions: permissions.remove.others.");
+				return;
+			}
+
 			int c = 0;
 			foreach(User u in GameController.current.dataBase){
 				if(u.Username == user){
 					if (Permissions.IsValidPermission (perm) && u.Permissions.Contains(perm)) {
 						u.Permissions.Remove (perm);
 						SendResponse ("Removed permission \'" + perm + "\' from \'" + user + "\'.");
+
 						GameController.sl.StartSave ();
+						GameController.lm.ReloadKeepWindows ();
+						GameController.pm.RefreshPermissions ();
 					} else if (Permissions.IsValidPermission (perm) == false){
 						SendResponse ("Invalid permission \'" + perm + "\'.");
 					} else if(u.Permissions.Contains(perm) == false){
@@ -207,12 +253,27 @@ public class ConsoleManager : MonoBehaviour {
 			return;
 		} else if (cmd.ToLower ().StartsWith ("version")) {
 			SendResponse (Version.GetVersion ());
-			Application.OpenURL("https://github.com/KithM/Ruthenium/releases");
+			if(Version.GetCurrentVersion() != Version.GetVersion()){
+				SendResponse ("Version \'" + Version.GetCurrentVersion() + "\' is out of date. You can get the latest version at https://github.com/KithM/Ruthenium/releases.");
+			}
 			return;
 		} else if (cmd.ToLower ().StartsWith ("user list")) {
-			foreach (User u in GameController.current.dataBase) {
-				SendResponse (u.Username);
-				return;
+			foreach (User user in GameController.current.dataBase) {
+				Debug.Log (user.Username);
+
+				if(user.Permissions == null){
+					user.Permissions = new List<string>();
+				}
+				if(user.Permissions.Contains("user.type.hidden") && !GameController.current.permissions.Contains("settings.see.hidden")){
+					continue;
+				}
+
+				if (user.Username != GameController.current.GetUsername ()){
+					SendResponse (user.Username + " (" + user.UserGroup + ")");
+				} else if (user.Username == GameController.current.GetUsername ()){
+					SendResponse ("[" + user.Username + "]" + " (" + user.UserGroup + ")");
+				}
+
 			}
 		} else if (cmd.ToLower ().StartsWith ("clear")) {
 			commandList.text = GameController.current.GetUserGroup().ToUpper() + " " + GameController.current.GetUsername() + "@" + GameController.current.GetUserID() + ": \n";

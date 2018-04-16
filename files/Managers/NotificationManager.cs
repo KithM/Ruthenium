@@ -26,7 +26,7 @@ public class NotificationManager : MonoBehaviour {
 	}
 
 	public void ShowNotification(string notification){
-		if(GameController.current.permissions != null && GameController.current.permissions.Contains("Notifications.Off")){
+		if(GameController.current.permissions != null && GameController.current.permissions.Contains("notifications.off")){
 			return;
 		}
 		alpha = 1;

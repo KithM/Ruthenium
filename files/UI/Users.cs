@@ -18,13 +18,11 @@ public class Users : MonoBehaviour {
 
 	public void ShowMenu () {
 		usersPanel.SetActive (true);
-
 		usersList.text = "<b>Registered Users (Public only): </b>\n\n";
-		int n = 0;
 
+		int n = 0;
 		foreach (User user in GameController.current.dataBase) {
 			if(user.Permissions == null){
-				// TODO
 				user.Permissions = new List<string>();
 			}
 			if(user.Permissions.Contains("user.type.hidden") && !GameController.current.permissions.Contains("settings.see.hidden")){

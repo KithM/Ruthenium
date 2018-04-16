@@ -90,6 +90,7 @@ public class LoginManager : MonoBehaviour {
 				// Finally, write out some basic info to the debug.log file
 				string log = "LoginManager::Login: Logged in as \'" + GameController.current.username + "\'.";
 				Logger.WriteLog (log);
+				return;
 
 			} else if(username.text == databaseusername){
 				warningText.text = "Incorrect password.";
@@ -231,32 +232,23 @@ public class LoginManager : MonoBehaviour {
 
 	public void Reload(){
 		WindowManager.CloseAllWindows ();
-		GameController.sl.StartLoad ();
-
-		int count = 0;
-		for(int i = 0; i < GameController.current.dataBase.Count; i++){
-			if(GameController.current.dataBase[i].Username == GameController.current.GetUsername()) {
-				count++;
-			}
-		}
-
-		GameController.nm.ShowNotification ("Reloading.");
-
-		if(count < 1){
-			//The user no longer exists, so we should logout
-			Logout ();
-		}
-
-		// The user still exists so we can stay logged in
+		ReloadGame ();
 	}
 
 	public void ReloadKeepWindows(){
+		ReloadGame ();
+	}
+
+	void ReloadGame(){
+		List<string> oldperms = GameController.current.permissions;
+
 		GameController.sl.StartLoad ();
 
 		int count = 0;
 		for(int i = 0; i < GameController.current.dataBase.Count; i++){
-			if(GameController.current.dataBase[i].Username == GameController.current.GetUsername()) {
+			if(GameController.current.dataBase[i].Username == GameController.current.GetUsername ()) {
 				count++;
+				break;
 			}
 		}
 
@@ -265,10 +257,10 @@ public class LoginManager : MonoBehaviour {
 		if(count < 1){
 			//The user no longer exists, so we should logout
 			Logout ();
-			return;
 		}
 
-		// The user still exists so we can stay logged in
+		// The user still exists so set our null permissions equal to our oldperms
+		GameController.current.SetPermissions (oldperms);
 	}
 		
 	// Here should be the normal "DeleteUser" function ,for deleting specific users

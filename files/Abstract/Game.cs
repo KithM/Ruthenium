@@ -180,13 +180,16 @@ public class Game : IXmlSerializable {
 
 			// Check the user's database version. Make sure it is up to date. If not, let them know
 			string readVersion = reader.GetAttribute ("update");
+
 			if (readVersion != Version.GetVersion ().ToString() && readVersion != null && readVersion != "") {
 				Debug.LogError ("Game::ReadXml: Version \'<b>" + readVersion + "</b>\' is out of date. Make sure the data file is updated to most recent version.");
 				Logger.WriteLog ("Game::ReadXml: Version \'" + readVersion + "\' is out of date. Version should be update \'" + Version.GetVersion ().ToString() + "\'.");
-				GameController.nm.ShowNotification ("Ruthenium <b>" + readVersion + "</b> is out of date. Update to the newest version, <b>" + Version.GetVersion().ToString() + "</b>.");
+				GameController.nm.ShowNotification ("Ruthenium <b>" + readVersion + "</b> is out of date. Update to the newest version, <b>" + Version.GetVersion() + "</b>.");
+				Version.SetCurrentVersion(readVersion);
 			} else if (readVersion != null && readVersion != ""){
 				Debug.Log ("Game::ReadXml: Version \'<b>" + readVersion + "</b>\' loaded successfully.");
 				GameController.nm.ShowNotification ("Ruthenium <b>" + Version.GetVersion() + "</b> loaded successfully.");
+				Version.SetCurrentVersion(readVersion);
 			}
 
 			switch (reader.Name) {
