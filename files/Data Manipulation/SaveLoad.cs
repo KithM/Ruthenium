@@ -133,5 +133,8 @@ public class SaveLoad : MonoBehaviour {
 	public static string ImagesBasePath(){
 		return System.IO.Path.Combine (Application.persistentDataPath, "Images");
 	}
+	public static string FontsBasePath(){
+		return System.IO.Path.Combine (Application.persistentDataPath, "Data/fonts");
+	}
 
 }

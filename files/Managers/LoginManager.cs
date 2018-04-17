@@ -62,8 +62,6 @@ public class LoginManager : MonoBehaviour {
 			string databaseprivelages = user.UserGroup;
 			List<string> databasepermissions = user.Permissions;
 
-			//Debug.Log ("Key: " + databaseusername + "\nValue: " + databasepassword);
-
 			if(username.text == databaseusername && password.text == databasepassword){
 				GameController.nm.ShowNotification ("Welcome, " + databaseusername);
 				Debug.Log ("LoginManager::Login: Login successful with username \'<b>" + databaseusername + "</b>\'.");
@@ -86,6 +84,9 @@ public class LoginManager : MonoBehaviour {
 				// Switch from our login panel to the desktop screen
 				loginPanel.SetActive (false);
 				desktopPanel.SetActive (true);
+
+				// Update our UserID to match our current username Hash Code
+				GameController.current.SetUserID(GameController.current.GetUsername().GetHashCode());
 
 				// Finally, write out some basic info to the debug.log file
 				string log = "LoginManager::Login: Logged in as \'" + GameController.current.username + "\'.";
@@ -119,12 +120,10 @@ public class LoginManager : MonoBehaviour {
 		}
 
 		if(u.Length > 25){
-			// TODO
 			warningText.text = "Username is too long (" + u.Length + " char).";
 			return;
 		}
 		if(p.Length > 50){
-			// TODO
 			warningText.text = "Password is too long (" + p.Length + " char).";
 			return;
 		}
@@ -194,13 +193,16 @@ public class LoginManager : MonoBehaviour {
 		desktopPanel.SetActive (true);
 	}
 	public void ShowLogin(){
+		// Empty our Username and Password fields
+		username.text = "";
+		password.text = "";
+
 		// Switch from our login panel to the desktop screen
 		loginPanel.SetActive (true);
 		desktopPanel.SetActive (false);
 	}
 
 	public void DeleteCurrentUser(){
-		// TODO
 		if(GameController.current.permissions.Contains("user.type.permanent")){
 			string log1 = "LoginManager::DeleteCurrentUser: Failed to delete the account \'" + GameController.current.GetUsername() + "\'. (insufficient permissions)";
 			Logger.WriteLog (log1);
@@ -240,14 +242,19 @@ public class LoginManager : MonoBehaviour {
 	}
 
 	void ReloadGame(){
-		List<string> oldperms = GameController.current.permissions;
+		//List<string> oldperms = GameController.current.permissions;
+		string username = GameController.current.GetUsername ();
 
 		GameController.sl.StartLoad ();
 
 		int count = 0;
-		for(int i = 0; i < GameController.current.dataBase.Count; i++){
-			if(GameController.current.dataBase[i].Username == GameController.current.GetUsername ()) {
+		foreach(User user in GameController.current.dataBase){
+			if(user.Username == GameController.current.GetUsername ()) {
 				count++;
+
+				// The user still exists so set our null permissions equal to our user's perms
+				GameController.current.SetPermissions (user.Permissions);
+
 				break;
 			}
 		}
@@ -258,9 +265,6 @@ public class LoginManager : MonoBehaviour {
 			//The user no longer exists, so we should logout
 			Logout ();
 		}
-
-		// The user still exists so set our null permissions equal to our oldperms
-		GameController.current.SetPermissions (oldperms);
 	}
 		
 	// Here should be the normal "DeleteUser" function ,for deleting specific users

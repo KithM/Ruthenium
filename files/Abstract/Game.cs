@@ -12,7 +12,7 @@ public class Game : IXmlSerializable {
 
 	public string username { get; protected set; } // Our username is only filled in when we log in
 	public string password { get; protected set; } // Our password is only filled in when we log in
-	public int userID { get; protected set; } // Our userID is only used for saving the default XML
+	public int userID { get; protected set; } // Our userID holds our username hash
 	public string bio { get; protected set; } // The Biography of the user, or whatever the user sets it to
 	public string userGroup { get; protected set; } // TODO: Our user group. Can only be User or Admin
 	public List<string> permissions { get; protected set; } // Our user privelages. Will hold all of our special permissions we can do when we are logged in
@@ -205,7 +205,6 @@ public class Game : IXmlSerializable {
 
 				if (reader.ReadToDescendant ("Username")) {
 					xmlusername = reader.ReadString ();
-					//TODO:
 					if(xmlusername.Length > 25){
 						Debug.LogError ("Game::ReadXml: The specified username \'<b>" + xmlusername + "</b>\' is too long (" + xmlusername.Length + " char).");
 						Logger.WriteLog ("Game::ReadXml: The specified username \'" + xmlusername + "\' is too long (" + xmlusername.Length + " char).");
@@ -216,7 +215,6 @@ public class Game : IXmlSerializable {
 				}
 				if (reader.ReadToNextSibling ("Password")) {
 					xmlpassword = reader.ReadString ();
-					//TODO:
 					if(xmlpassword.Length > 50){
 						Debug.LogError ("Game::ReadXml: The specified password for user \'<b>" + xmlusername + "</b>\' is too long (" + xmlpassword.Length + " char).");
 						Logger.WriteLog ("Game::ReadXml: The specified password for user \'" + xmlusername + "\' is too long (" + xmlpassword.Length + " char).");
@@ -227,7 +225,6 @@ public class Game : IXmlSerializable {
 				}
 				if (reader.ReadToNextSibling ("Bio")) {
 					xmlbio = reader.ReadString ();
-					//TODO:
 					if(xmlbio.Length > 300){
 						Debug.LogError ("Game::ReadXml: The specified bio for user \'<b>" + xmlusername + "</b>\' is too long (" + xmlbio.Length + " char).");
 						Logger.WriteLog ("Game::ReadXml: The specified bio for user \'" + xmlusername + "\' is too long (" + xmlbio.Length + " char).");
@@ -245,7 +242,6 @@ public class Game : IXmlSerializable {
 						xmlpermissions.Add (reader.ReadString ());
 
 						while(reader.ReadToNextSibling("Permission")){
-							//TODO: Make more permissions
 							xmlpermissions.Add (reader.ReadString ());
 						}
 					}
@@ -395,6 +391,9 @@ public class Game : IXmlSerializable {
 			"1. Modification\r\n" + 
 			"2. User Permissions\r\n" +
 			"3. User Groups\r\n\r\n" + 
+			"GitHub Repository: https://github.com/KithM/Ruthenium\r\n" +
+			"Latest Build: https://github.com/KithM/Ruthenium/releases\r\n" +
+			"Latest Stable: https://github.com/KithM/Ruthenium/releases/latest\r\n\r\n" +
 			"MODIFICATION\r\n" + 
 			"To modify the game, open any .ruth file (located in the Data folder) in a text editor and change any values as you wish. " +
 			"However, note that modifications could cause the game to crash or stop working, so make sure to back up the game first. " +

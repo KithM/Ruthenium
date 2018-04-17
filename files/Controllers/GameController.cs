@@ -30,11 +30,14 @@ public class GameController : MonoBehaviour {
 	}
 
 	void Start(){
-		// Create a unique identifier for the new user, even if it won't be used
-		current.SetUserID(UnityEngine.Random.Range (1000,99999));
-
+		// Load the data files: check if the data.ruth, README.info, and system.info files exist
+		// If not, create a new one
 		sl.StartLoad ();
 		current.WriteReadme ();
 		Logger.WriteSystemInfo ();
+	}
+
+	public void OpenRepositoryURL(){
+		Application.OpenURL ("https://github.com/KithM/Ruthenium/");
 	}
 }

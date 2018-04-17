@@ -71,7 +71,6 @@ public class PermissionsManager : MonoBehaviour {
 		}
 		dd.AddOptions (usersList);
 
-		// TODO: When we refresh from another user's permissions, we want to keep their permissions visible and not switch to our permissions
 		for (int i = 0; i < dd.options.Count; i++) {
 			if(dd.options[i].text == GameController.current.GetUsername()){
 				dd.value = lastUserIndex; //i
@@ -80,7 +79,6 @@ public class PermissionsManager : MonoBehaviour {
 		}
 	}
 
-	// TODO: Works like a charm, but adding / removing permissions on any user only does it to the logged in user
 	public void ViewUserPermissions(){
 
 		// Delete our old permissions from the list, we want to see our selected user's permissions

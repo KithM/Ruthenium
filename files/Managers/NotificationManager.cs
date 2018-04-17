@@ -15,7 +15,6 @@ public class NotificationManager : MonoBehaviour {
 	public CanvasGroup cg;
 
 	void Update(){
-		//Mathf.Lerp (cg.alpha, alpha, 1f * Time.deltaTime);
 		if(alpha >= 0.075f * Time.deltaTime){
 			alpha -= 0.075f * Time.deltaTime;
 		}
@@ -31,8 +30,5 @@ public class NotificationManager : MonoBehaviour {
 		}
 		alpha = 1;
 		notificationText.text = notification;
-	}
-	public void HideNotification(){
-		//notificationPanel.SetActive (false);
 	}
 }

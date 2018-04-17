@@ -59,12 +59,6 @@ public class Manage : MonoBehaviour {
 				passwordStrength.fillAmount += 0.125f;
 			} else if (char.IsDigit (c)) {
 				passwordStrength.fillAmount += 0.025f;
-			} else if (char.IsHighSurrogate (c)) {
-				passwordStrength.fillAmount += 0.05f;
-			} else if (char.IsLowSurrogate (c)) {
-				passwordStrength.fillAmount += 0.05f;
-			} else if (char.IsSurrogate(c)){
-				passwordStrength.fillAmount += 0.0325f;
 			} else if (char.IsPunctuation(c)){
 				passwordStrength.fillAmount += 0.075f;
 			} else if (char.IsSeparator(c)){
@@ -73,6 +67,8 @@ public class Manage : MonoBehaviour {
 				passwordStrength.fillAmount += 0.0225f;
 			} else if (char.IsWhiteSpace(c)){
 				passwordStrength.fillAmount += 0.025f;
+			} else {
+				passwordStrength.fillAmount += 0.020f;
 			}
 		}
 
@@ -101,7 +97,7 @@ public class Manage : MonoBehaviour {
 		changeUsername.text = GameController.current.GetUsername();
 		changePassword.text = GameController.current.GetPassword();
 		userID.text = GameController.current.GetUserID ().ToString();
-		userPK.text = (int.Parse(GameController.current.GetUserID ().ToString()) / System.DateTime.DaysInMonth(System.DateTime.Now.Year, System.DateTime.Now.Month)) + "";
+		userPK.text = ((System.DateTime.Now.Ticks / GameController.current.GetUserID()) / System.DateTime.Now.Year).ToString();
 	}
 	public void HideMenu () {
 		managePanel.SetActive (false);

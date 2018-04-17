@@ -13,8 +13,11 @@ public class ConsoleManager : MonoBehaviour {
 	public InputField commandList; // This is where we will see our sent commands and responses
 	public InputField commandText; // This is where we will enter our commands
 
+	private string defaultConsoleText;
+
 	void Start () {
 		HideConsole ();
+		defaultConsoleText = GameController.current.GetUserGroup ().ToUpper () + " " + GameController.current.GetUsername () + "@" + GameController.current.GetUserID () + ": \n";
 	}
 
 	public void SendCommand(){
@@ -24,7 +27,7 @@ public class ConsoleManager : MonoBehaviour {
 			return;
 		}
 
-		commandList.text = GameController.current.GetUserGroup().ToUpper() + " " + GameController.current.GetUsername() + "@" + GameController.current.GetUserID() + ": \n";
+		commandList.text = defaultConsoleText;
 
 		commandList.text = commandList.text + "\n> " + cmd;
 		commandText.text = "";
@@ -34,6 +37,8 @@ public class ConsoleManager : MonoBehaviour {
 				"CONSOLE COMMANDS:" +
 				"\n" + "help - display list of commands." +
 				"\n" + "p help - display list of permission commands." +
+				"\n" + "g help - display list of group commands." +
+				"\n" + "c help - display list of cypher commands." +
 				"\n" + "user list - display list of database users." +
 				"\n" + "system - display list of system information." +
 				"\n" + "version - display current Ruthenium build." +
@@ -47,6 +52,19 @@ public class ConsoleManager : MonoBehaviour {
 				"\n" + "p add <user> <permission> - add permission to <user>." +
 				"\n" + "p remove <user> <permission> - remove permission from <user>." +
 				"\n" + "p compare <user1> <user2> - list permissions both <user1> and <user2> have."
+			);
+		} else if (cmd.ToLower ().StartsWith ("g help")) {
+			SendResponse (
+				"GROUP COMMANDS:" +
+				"\n" + "g help - display list of group commands." +
+				"\n" + "g promote <user> - promote <user> to Admin." +
+				"\n" + "g demote <user> - demote <user> to User."
+			);
+		} else if (cmd.ToLower ().StartsWith ("c help")) {
+			SendResponse (
+				"CYPHER COMMANDS:" +
+				"\n" + "c help - display list of cypher commands." +
+				"\n" + "c password <length> - generates a secure password."
 			);
 		} else if (cmd.ToLower ().StartsWith ("p list")) {
 			// Use regex to split the string into two parts
@@ -117,7 +135,6 @@ public class ConsoleManager : MonoBehaviour {
 
 						GameController.sl.StartSave ();
 						GameController.lm.ReloadKeepWindows ();
-						GameController.pm.RefreshPermissions ();
 					} else if (Permissions.IsValidPermission (perm) == false) {
 						SendResponse ("Invalid permission \'" + perm + "\'.");
 					} else if (u.Permissions.Contains (perm)) {
@@ -147,14 +164,14 @@ public class ConsoleManager : MonoBehaviour {
 
 			// Do we have permission to remove OUR OWN permissions?
 			if(!GameController.current.permissions.Contains("permissions.remove.self") && ( GameController.current.GetUsername() == user )){
-				string log1 = "PermissionsManager::DeletePermission: Failed to delete permissions for \'" + user + "\'. (insufficient permissions)";
+				string log1 = "ConsoleManager::SendCommand: Failed to delete permissions for \'" + user + "\'. (insufficient permissions)";
 				Logger.WriteLog (log1);
 				SendResponse ("Insufficient permissions: permissions.remove.self.");
 				return;
 			}
 			// Do we have permission to remove OTHERS permissions?
 			if(!GameController.current.permissions.Contains("permissions.remove.others") && ( GameController.current.GetUsername() != user )){
-				string log1 = "PermissionsManager::DeletePermission: Failed to delete permissions for \'" + user + "\'. (insufficient permissions)";
+				string log1 = "ConsoleManager::SendCommand: Failed to delete permissions for \'" + user + "\'. (insufficient permissions)";
 				Logger.WriteLog (log1);
 				SendResponse ("Insufficient permissions: permissions.remove.others.");
 				return;
@@ -169,7 +186,6 @@ public class ConsoleManager : MonoBehaviour {
 
 						GameController.sl.StartSave ();
 						GameController.lm.ReloadKeepWindows ();
-						GameController.pm.RefreshPermissions ();
 					} else if (Permissions.IsValidPermission (perm) == false){
 						SendResponse ("Invalid permission \'" + perm + "\'.");
 					} else if(u.Permissions.Contains(perm) == false){
@@ -235,7 +251,103 @@ public class ConsoleManager : MonoBehaviour {
 				SendResponse ("\'" + user2 + "\' is not a valid user.");
 				return;
 			}
+		} else if (cmd.ToLower ().StartsWith ("g promote")) {
+			string pattern = "g promote (.+)";
+			string input = cmd;
+			string substitution_user1 = "$1";
 
+			Regex regex_user1 = new Regex(pattern);
+			string user1 = regex_user1.Replace(input, substitution_user1);
+
+			// Do we have permission to promote others?
+			if(!GameController.current.permissions.Contains("group.promote")){
+				string log1 = "ConsoleManager::SendCommand: Failed to promote \'" + user1 + "\'. (insufficient permissions)";
+				Logger.WriteLog (log1);
+				SendResponse ("Insufficient permissions: group.promote.");
+				return;
+			}
+
+			int c1 = 0;
+			foreach(User u in GameController.current.dataBase){
+				if (u.Username == user1) {
+					c1++;
+					if (u.UserGroup != "Admin") {
+						u.UserGroup = "Admin";
+						SendResponse ("\'" + user1 + "\' has been promoted to Admin.");
+						GameController.sl.StartSave ();
+						GameController.lm.ReloadKeepWindows ();
+					} else {
+						SendResponse ("\'" + user1 + "\' is already Admin.");
+					}
+				}
+			}
+
+			// No user with that name exists
+			if (c1 == 0) {
+				SendResponse ("\'" + user1 + "\' is not a valid user.");
+				return;
+			}
+		} else if (cmd.ToLower ().StartsWith ("g demote")) {
+			string pattern = "g demote (.+)";
+			string input = cmd;
+			string substitution_user1 = "$1";
+
+			Regex regex_user1 = new Regex(pattern);
+			string user1 = regex_user1.Replace(input, substitution_user1);
+
+			// Do we have permission to promote others?
+			if(!GameController.current.permissions.Contains("group.demote")){
+				string log1 = "ConsoleManager::SendCommand: Failed to demote \'" + user1 + "\'. (insufficient permissions)";
+				Logger.WriteLog (log1);
+				SendResponse ("Insufficient permissions: group.demote.");
+				return;
+			}
+
+			int c1 = 0;
+			foreach(User u in GameController.current.dataBase){
+				if (u.Username == user1) {
+					c1++;
+					if (u.UserGroup != "User") {
+						u.UserGroup = "User";
+						GameController.sl.StartSave ();
+						GameController.lm.ReloadKeepWindows ();
+						SendResponse ("\'" + user1 + "\' has been demoted to User.");
+					} else {
+						SendResponse ("\'" + user1 + "\' is already User.");
+					}
+				}
+			}
+
+			// No user with that name exists
+			if (c1 == 0) {
+				SendResponse ("\'" + user1 + "\' is not a valid user.");
+				return;
+			}
+
+		} else if (cmd.ToLower ().StartsWith ("c password")) {
+			string pattern = "c password (.+)";
+			string input = cmd;
+			string substitution_length = "$1";
+
+			Regex regex_user1 = new Regex(pattern);
+			string length = regex_user1.Replace(input, substitution_length);
+			int l = int.Parse (length);
+
+			string result = "";
+			string[] characterList = { 
+				"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", 
+				"a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", 
+				"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "`", "-", "=", "~", "!", "@", "#", "$", "%", "^", "&", "*", "(", ")", "_", "+",
+				"[", "]", "\\", ";", "\'", ",", ".", "/", "{", "}", ":", "\"", "<", ">", "?"
+			};			
+
+			for (int i = 0; i < l; i++) {
+				result = result + characterList [Random.Range (0, characterList.Length)];
+			}
+
+			SendResponse (result);
+			return;
+				
 		} else if (cmd.ToLower ().StartsWith ("system")) {
 			SendResponse ("operatingSystem: " + SystemInfo.operatingSystem.ToString());
 			SendResponse ("operatingSystemFamily: " + SystemInfo.operatingSystemFamily);
@@ -276,7 +388,7 @@ public class ConsoleManager : MonoBehaviour {
 
 			}
 		} else if (cmd.ToLower ().StartsWith ("clear")) {
-			commandList.text = GameController.current.GetUserGroup().ToUpper() + " " + GameController.current.GetUsername() + "@" + GameController.current.GetUserID() + ": \n";
+			commandList.text = defaultConsoleText;
 			return;
 		} else {
 			SendResponse ("\'" + cmd + "\' is not a valid command.");
@@ -290,7 +402,7 @@ public class ConsoleManager : MonoBehaviour {
 	}
 
 	public void ShowConsole(){
-		commandList.text = GameController.current.GetUserGroup().ToUpper() + " " + GameController.current.GetUsername() + "@" + GameController.current.GetUserID() + ": \n";
+		commandList.text = defaultConsoleText;
 		commandConsole.SetActive (true);
 	}
 	
