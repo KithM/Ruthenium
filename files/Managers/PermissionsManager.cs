@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using UnityEngine.UI;
+﻿using UnityEngine.UI;
 using UnityEngine;
 using System.Collections.Generic;
 
@@ -67,13 +66,13 @@ public class PermissionsManager : MonoBehaviour {
 		dd.ClearOptions ();
 		List<string> usersList = new List<string> ();
 		foreach (User user in GameController.current.dataBase) {
-				usersList.Add (user.Username.ToString());
+				usersList.Add (user.Username);
 		}
 		dd.AddOptions (usersList);
 
 		for (int i = 0; i < dd.options.Count; i++) {
 			if(dd.options[i].text == GameController.current.GetUsername()){
-				dd.value = lastUserIndex; //i
+				dd.value = lastUserIndex;
 				break;
 			}
 		}
@@ -125,13 +124,13 @@ public class PermissionsManager : MonoBehaviour {
 
 		foreach (User user in GameController.current.dataBase) {
 			if(user.Username == GameController.current.dataBase [dd.value].Username){
-				//GameController.current.permissions.Remove (perm);
+				// We do not need to change our current perms as they will be updated to our user's perms
 				user.Permissions.Remove (perm);
 
 				// Keep track of what user we have modified
 				lastUserIndex = dd.value;
 
-				// FIXME: Permissions aren't "existing" when we try to remove permissions from other users
+				// Save the game and reload, showing the new permissions
 				GameController.sl.StartSave ();
 				GameController.lm.ReloadKeepWindows ();
 				RefreshPermissions ();
@@ -183,7 +182,7 @@ public class PermissionsManager : MonoBehaviour {
 				// Keep track of what user we have modified
 				lastUserIndex = dd.value;
 
-				// FIXME: Permissions aren't "existing" when we try to add permissions to other users
+				// Save the game and reload, showing the new permissions
 				GameController.sl.StartSave ();
 				GameController.lm.ReloadKeepWindows ();
 				RefreshPermissions ();

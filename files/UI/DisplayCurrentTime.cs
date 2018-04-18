@@ -12,6 +12,6 @@ public class DisplayCurrentTime : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		timeText.text = System.DateTime.Now.ToShortTimeString ();// + "\n" + System.DateTime.Now.Date.DayOfWeek.ToString ();//System.DateTime.Now.ToShortDateString();
+		timeText.text = System.DateTime.Now.ToShortTimeString ();
 	}
 }

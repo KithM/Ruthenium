@@ -63,10 +63,8 @@ public class Manage : MonoBehaviour {
 				passwordStrength.fillAmount += 0.075f;
 			} else if (char.IsSeparator(c)){
 				passwordStrength.fillAmount += 0.0325f;
-			} else if (char.IsSymbol(c)){
+			} else if (char.IsSymbol(c) || char.IsWhiteSpace(c)){
 				passwordStrength.fillAmount += 0.0225f;
-			} else if (char.IsWhiteSpace(c)){
-				passwordStrength.fillAmount += 0.025f;
 			} else {
 				passwordStrength.fillAmount += 0.020f;
 			}

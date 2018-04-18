@@ -1,11 +1,8 @@
 ﻿using UnityEngine;
-using UnityEngine.SceneManagement;
-using System;
 using System.IO;
 using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
-using System.Collections;
 using System.Collections.Generic;
 
 public class Game : IXmlSerializable {
@@ -40,7 +37,7 @@ public class Game : IXmlSerializable {
 		dataBase = new List<User> ();
 		permissions = new List<string> ();
 
-		string xmlText = System.IO.File.ReadAllText (fileName);
+		string xmlText = File.ReadAllText (fileName);
 		Debug.Log(xmlText);
 
 		XmlTextReader reader = new XmlTextReader( new StringReader( xmlText ) );
@@ -63,7 +60,7 @@ public class Game : IXmlSerializable {
 		}
 
 		// Version and game info, only put into the data file once
-		writer.WriteAttributeString ("update", Version.GetVersion().ToString());
+		writer.WriteAttributeString ("update", Version.GetVersion());
 
 		if(dataBase.Count > 0){
 			// WE HAVE ATLEAST 1 USER IN THE DATA.RUTH FILE
@@ -365,7 +362,7 @@ public class Game : IXmlSerializable {
 
 	public void WriteInfo(string info){
 
-		string filePath = System.IO.Path.Combine ( Application.persistentDataPath, "README.info" );
+		string filePath = Path.Combine ( Application.persistentDataPath, "README.info" );
 
 		if(File.Exists(filePath) && File.ReadAllText(filePath).Contains(info)){
 			//The file already exists and the information is up to date, so we can return
@@ -387,7 +384,7 @@ public class Game : IXmlSerializable {
 
 	public void WriteReadme(){
 		string info = 
-			"README CONTENTS (Version " + Version.GetVersion().ToString() + ")\r\n" + 
+			"README CONTENTS (Version " + Version.GetVersion() + ")\r\n" + 
 			"1. Modification\r\n" + 
 			"2. User Permissions\r\n" +
 			"3. User Groups\r\n\r\n" + 

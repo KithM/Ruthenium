@@ -1,8 +1,6 @@
-﻿using System.Collections;
-using UnityEngine.UI;
+﻿using UnityEngine.UI;
 using UnityEngine;
 using System.Collections.Generic;
-using System.IO;
 
 public class LoginManager : MonoBehaviour {
 
@@ -21,9 +19,6 @@ public class LoginManager : MonoBehaviour {
 	[Header("Text")]
 	public Text warningText;
 	public Text userText;
-
-	[Header("Toggle")]
-	bool hasUpdated;
 
 	// Use this for initialization
 	void Start () {
@@ -79,14 +74,14 @@ public class LoginManager : MonoBehaviour {
 						GameController.current.AddPermission (permission);
 					}
 				}
-				//GameController.current.SetPermissions (databasepermissions);
-
-				// Switch from our login panel to the desktop screen
-				loginPanel.SetActive (false);
-				desktopPanel.SetActive (true);
 
 				// Update our UserID to match our current username Hash Code
 				GameController.current.SetUserID(GameController.current.GetUsername().GetHashCode());
+				
+				// At this point, all of our information is up to date
+				// Switch from our login panel to the desktop screen
+				loginPanel.SetActive (false);
+				desktopPanel.SetActive (true);
 
 				// Finally, write out some basic info to the debug.log file
 				string log = "LoginManager::Login: Logged in as \'" + GameController.current.username + "\'.";
@@ -242,9 +237,7 @@ public class LoginManager : MonoBehaviour {
 	}
 
 	void ReloadGame(){
-		//List<string> oldperms = GameController.current.permissions;
-		string username = GameController.current.GetUsername ();
-
+		// Instead of creating a list of permissions equal to our old ones, we want to set our permissions equal to our exact user's permissions
 		GameController.sl.StartLoad ();
 
 		int count = 0;
@@ -269,7 +262,7 @@ public class LoginManager : MonoBehaviour {
 		
 	// Here should be the normal "DeleteUser" function ,for deleting specific users
 
-	public static void ExitGame(){
+	public void ExitGame(){
 		Application.Quit ();
 	}
 }

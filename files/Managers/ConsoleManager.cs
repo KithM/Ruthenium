@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Text.RegularExpressions;
@@ -23,7 +22,7 @@ public class ConsoleManager : MonoBehaviour {
 	public void SendCommand(){
 		string cmd = commandText.text;
 
-		if(cmd == null || cmd == ""){
+		if(string.IsNullOrEmpty(cmd)){
 			return;
 		}
 
@@ -349,19 +348,19 @@ public class ConsoleManager : MonoBehaviour {
 			return;
 				
 		} else if (cmd.ToLower ().StartsWith ("system")) {
-			SendResponse ("operatingSystem: " + SystemInfo.operatingSystem.ToString());
+			SendResponse ("operatingSystem: " + SystemInfo.operatingSystem);
 			SendResponse ("operatingSystemFamily: " + SystemInfo.operatingSystemFamily);
-			SendResponse ("deviceUniqueIdentifier: " + SystemInfo.deviceUniqueIdentifier.ToString());
-			SendResponse ("deviceName: " + SystemInfo.deviceName.ToString());
-			SendResponse ("deviceModel: " + SystemInfo.deviceModel.ToString());
-			SendResponse ("deviceType: " + SystemInfo.deviceType.ToString());
-			SendResponse ("graphicsDeviceName: " + SystemInfo.graphicsDeviceName.ToString());
-			SendResponse ("graphicsDeviceType: " + SystemInfo.graphicsDeviceType.ToString());
-			SendResponse ("graphicsDeviceVendor: " + SystemInfo.graphicsDeviceVendor.ToString());
+			SendResponse ("deviceUniqueIdentifier: " + SystemInfo.deviceUniqueIdentifier);
+			SendResponse ("deviceName: " + SystemInfo.deviceName);
+			SendResponse ("deviceModel: " + SystemInfo.deviceModel);
+			SendResponse ("deviceType: " + SystemInfo.deviceType);
+			SendResponse ("graphicsDeviceName: " + SystemInfo.graphicsDeviceName);
+			SendResponse ("graphicsDeviceType: " + SystemInfo.graphicsDeviceType);
+			SendResponse ("graphicsDeviceVendor: " + SystemInfo.graphicsDeviceVendor);
 			SendResponse ("graphicsDeviceID: " + SystemInfo.graphicsDeviceID);
 			SendResponse ("graphicsMemorySize: " + SystemInfo.graphicsMemorySize + " MB");
 			SendResponse ("graphicsMultiThreaded: " + SystemInfo.graphicsMultiThreaded);
-			SendResponse ("processorCount: " + SystemInfo.processorCount.ToString());
+			SendResponse ("processorCount: " + SystemInfo.processorCount);
 			return;
 		} else if (cmd.ToLower ().StartsWith ("version")) {
 			SendResponse (Version.GetVersion ());

@@ -1,10 +1,7 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using System.IO;
-using System.Xml.Serialization;
 
-public class Fonts {
+public static class Fonts {
 
 	public static string defaultFont;
 	public static int defaultFontSize;
@@ -19,28 +16,24 @@ public class Fonts {
 	public static int defaultSystemFontSize;
 
 	public static Font GetDefaultFont(){
-		string[] systemFonts = Font.GetOSInstalledFontNames ();
 		string font = defaultFont;
 		Font f = Font.CreateDynamicFontFromOSFont (font, defaultFontSize); // 14
 
 		return f;
 	}
 	public static Font GetDefaultBoldFont(){
-		string[] systemFonts = Font.GetOSInstalledFontNames ();
 		string font = defaultBoldFont;
 		Font f = Font.CreateDynamicFontFromOSFont (font, defaultBoldFontSize); // 16
 
 		return f;
 	}
 	public static Font GetDefaultExtraBoldFont(){
-		string[] systemFonts = Font.GetOSInstalledFontNames ();
 		string font = defaultExtraBoldFont;
 		Font f = Font.CreateDynamicFontFromOSFont (font, defaultExtraBoldFontSize); // 16
 
 		return f;
 	}
 	public static Font GetSystemFont(){
-		string[] systemFonts = Font.GetOSInstalledFontNames ();
 		string font = defaultSystemFont;
 		Font f = Font.CreateDynamicFontFromOSFont (font, defaultSystemFontSize); // 12
 
@@ -48,7 +41,7 @@ public class Fonts {
 	}
 
 	public static void LoadFonts(){
-		string filePath = System.IO.Path.Combine (SaveLoad.FontsBasePath (), "fonts.ruth");
+		string filePath = Path.Combine (SaveLoad.FontsBasePath (), "fonts.ruth");
 
 		if( Directory.Exists(SaveLoad.FontsBasePath() ) == false){
 			// NOTE: This can throw an exception if we can't
