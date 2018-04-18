@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using UnityEngine.UI;
+﻿using UnityEngine.UI;
 using UnityEngine;
 
 public class DisplayUsername : MonoBehaviour {
@@ -15,7 +14,7 @@ public class DisplayUsername : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		if (GameController.current.GetUsername () != usernameText.text && GameController.current.GetUsername () != "") {
-			usernameText.text = GameController.current.GetUsername ().ToString();
+			usernameText.text = GameController.current.GetUsername ();
 		}
 	}
 }

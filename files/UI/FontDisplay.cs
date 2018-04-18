@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine.UI;
+﻿using UnityEngine.UI;
 using UnityEngine;
 
 public class FontDisplay : MonoBehaviour {
@@ -18,7 +16,7 @@ public class FontDisplay : MonoBehaviour {
 		}
 	}
 	
-	void UpdateFont(Text t){
+	static void UpdateFont(Text t){
 		if (t != null && (t.font.name == "ROBOTO-REGULAR" || t.font.name == "ROBOTO-MEDIUM")) {
 			t.font = Fonts.GetDefaultFont();
 		} else if (t != null && t.font.name == "ROBOTO-BOLD"){

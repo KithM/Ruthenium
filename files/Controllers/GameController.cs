@@ -8,10 +8,10 @@ public class GameController : MonoBehaviour {
 	public Text password;
 
 	public static Game current { get; protected set; }
-	public static SaveLoad sl;
-	public static NotificationManager nm;
-	public static PermissionsManager pm;
-	public static LoginManager lm;
+	public static SaveLoad sl { get; protected set; }
+	public static NotificationManager nm { get; protected set; }
+	public static PermissionsManager pm { get; protected set; }
+	public static LoginManager lm { get; protected set; }
 
 	// Use this for initialization
 	void Awake () {

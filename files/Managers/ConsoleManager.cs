@@ -70,7 +70,7 @@ public class ConsoleManager : MonoBehaviour {
 			string user = Regex.Replace (cmd, "(.+\\ .+\\ )", "");
 
 			// Is the string null, empty?
-			if (user == " " || user == null || user == "") {
+			if (string.IsNullOrEmpty(user)) {
 				return;
 			}
 
