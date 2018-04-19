@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System.Text.RegularExpressions;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using System.Text.RegularExpressions;
 
 public class ConsoleManager : MonoBehaviour {
 
@@ -12,7 +12,7 @@ public class ConsoleManager : MonoBehaviour {
 	public InputField commandList; // This is where we will see our sent commands and responses
 	public InputField commandText; // This is where we will enter our commands
 
-	private string defaultConsoleText;
+	string defaultConsoleText;
 
 	void Start () {
 		HideConsole ();
@@ -91,15 +91,15 @@ public class ConsoleManager : MonoBehaviour {
 				return;
 			}
 		} else if (cmd.ToLower ().StartsWith ("p add")) {
-			string pattern = "p add (.+)\\ (.+)"; //(\w+)
+			const string pattern = "p add (.+)\\ (.+)"; //(\w+)
+			const string substitution_user = "$1";
+			const string substitution_perm = "$2";
 			string input = cmd;
-			string substitution_user = "$1";
-			string substitution_perm = "$2";
 
-			Regex regex_user = new Regex(pattern);
+			var regex_user = new Regex(pattern);
 			string user = regex_user.Replace(input, substitution_user);
 
-			Regex regex_perm = new Regex(pattern);
+			var regex_perm = new Regex(pattern);
 			string perm = regex_perm.Replace(input, substitution_perm);
 
 			// Does the permission exist? (case sensitive)
@@ -150,15 +150,15 @@ public class ConsoleManager : MonoBehaviour {
 				return;
 			}
 		} else if (cmd.ToLower ().StartsWith ("p remove")) {
-			string pattern = "p remove (.+)\\ (.+)";
+			const string pattern = "p remove (.+)\\ (.+)";
+			const string substitution_user = "$1";
+			const string substitution_perm = "$2";
 			string input = cmd;
-			string substitution_user = "$1";
-			string substitution_perm = "$2";
 
-			Regex regex_user = new Regex(pattern);
+			var regex_user = new Regex(pattern);
 			string user = regex_user.Replace(input, substitution_user);
 
-			Regex regex_perm = new Regex(pattern);
+			var regex_perm = new Regex(pattern);
 			string perm = regex_perm.Replace(input, substitution_perm);
 
 			// Do we have permission to remove OUR OWN permissions?
@@ -201,22 +201,22 @@ public class ConsoleManager : MonoBehaviour {
 				return;
 			}
 		} else if (cmd.ToLower ().StartsWith ("p compare")) {
-			string pattern = "p compare (.+)\\ (.+)";
+			const string pattern = "p compare (.+)\\ (.+)";
+			const string substitution_user1 = "$1";
+			const string substitution_user2 = "$2";
 			string input = cmd;
-			string substitution_user1 = "$1";
-			string substitution_user2 = "$2";
 
-			Regex regex_user1 = new Regex(pattern);
+			var regex_user1 = new Regex(pattern);
 			string user1 = regex_user1.Replace(input, substitution_user1);
 
-			Regex regex_user2 = new Regex(pattern);
+			var regex_user2 = new Regex(pattern);
 			string user2 = regex_user2.Replace(input, substitution_user2);
 
 			int c1 = 0;
 			int c2 = 0;
-			List<string> user1perms = new List<string>();
-			List<string> user2perms = new List<string>();
-			List<string> sameperms = new List<string>();
+			var user1perms = new List<string>();
+			var user2perms = new List<string>();
+			var sameperms = new List<string>();
 			foreach(User u in GameController.current.dataBase){
 				if (u.Username == user1) {
 					c1++;
@@ -251,11 +251,11 @@ public class ConsoleManager : MonoBehaviour {
 				return;
 			}
 		} else if (cmd.ToLower ().StartsWith ("g promote")) {
-			string pattern = "g promote (.+)";
+			const string pattern = "g promote (.+)";
+			const string substitution_user1 = "$1";
 			string input = cmd;
-			string substitution_user1 = "$1";
 
-			Regex regex_user1 = new Regex(pattern);
+			var regex_user1 = new Regex(pattern);
 			string user1 = regex_user1.Replace(input, substitution_user1);
 
 			// Do we have permission to promote others?
@@ -287,11 +287,11 @@ public class ConsoleManager : MonoBehaviour {
 				return;
 			}
 		} else if (cmd.ToLower ().StartsWith ("g demote")) {
-			string pattern = "g demote (.+)";
+			const string pattern = "g demote (.+)";
+			const string substitution_user1 = "$1";
 			string input = cmd;
-			string substitution_user1 = "$1";
 
-			Regex regex_user1 = new Regex(pattern);
+			var regex_user1 = new Regex(pattern);
 			string user1 = regex_user1.Replace(input, substitution_user1);
 
 			// Do we have permission to promote others?
@@ -324,11 +324,11 @@ public class ConsoleManager : MonoBehaviour {
 			}
 
 		} else if (cmd.ToLower ().StartsWith ("c password")) {
-			string pattern = "c password (.+)";
+			const string pattern = "c password (.+)";
+			const string substitution_length = "$1";
 			string input = cmd;
-			string substitution_length = "$1";
 
-			Regex regex_user1 = new Regex(pattern);
+			var regex_user1 = new Regex(pattern);
 			string length = regex_user1.Replace(input, substitution_length);
 			int l = int.Parse (length);
 

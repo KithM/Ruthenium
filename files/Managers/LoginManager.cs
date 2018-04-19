@@ -22,8 +22,8 @@ public class LoginManager : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		HideLoginDesktop ();
 		warningText.text = "";
-		desktopPanel.SetActive (false);
 	}
 
 	public void Login(){
@@ -153,7 +153,7 @@ public class LoginManager : MonoBehaviour {
 		string log1 = "LoginManager::Register: Register successful with username \'" + u + "\'.";
 		Logger.WriteLog (log1);
 
-		User user1 = new User (u, p);
+		var user1 = new User (u, p);
 
 		GameController.current.dataBase.Add (user1);
 		GameController.sl.StartSave ();
@@ -194,6 +194,11 @@ public class LoginManager : MonoBehaviour {
 
 		// Switch from our login panel to the desktop screen
 		loginPanel.SetActive (true);
+		desktopPanel.SetActive (false);
+	}
+	public void HideLoginDesktop(){
+		// Close everything
+		loginPanel.SetActive (false);
 		desktopPanel.SetActive (false);
 	}
 
@@ -262,6 +267,11 @@ public class LoginManager : MonoBehaviour {
 		
 	// Here should be the normal "DeleteUser" function ,for deleting specific users
 
+	public void ExitToMainMenu(){
+		Logout ();
+		HideLoginDesktop ();
+		GameController.dm.ShowMainMenu ();
+	}
 	public void ExitGame(){
 		Application.Quit ();
 	}

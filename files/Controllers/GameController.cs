@@ -12,6 +12,7 @@ public class GameController : MonoBehaviour {
 	public static NotificationManager nm { get; protected set; }
 	public static PermissionsManager pm { get; protected set; }
 	public static LoginManager lm { get; protected set; }
+	public static DatabaseManager dm { get; protected set; }
 
 	// Use this for initialization
 	void Awake () {
@@ -20,6 +21,7 @@ public class GameController : MonoBehaviour {
 		nm = FindObjectOfType<NotificationManager> ();
 		pm = FindObjectOfType<PermissionsManager> ();
 		lm = FindObjectOfType<LoginManager> ();
+		dm = FindObjectOfType<DatabaseManager> ();
 
 		// Create a new game
 		current = new Game (null, null);
@@ -28,7 +30,7 @@ public class GameController : MonoBehaviour {
 	void Start(){
 		// Load the data files: check if the data.ruth, README.info, and system.info files exist
 		// If not, create a new one
-		sl.StartLoad ();
+
 		current.WriteReadme ();
 		Logger.WriteSystemInfo ();
 	}

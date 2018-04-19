@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using UnityEngine.UI;
+﻿using UnityEngine.UI;
 using UnityEngine;
 using System.IO;
 
@@ -26,7 +25,7 @@ public class Profile : MonoBehaviour {
 	
 	public void ShowProfile(){
 
-		if (GameController.current.GetBio () != "" && GameController.current.GetBio () != null) {
+		if (string.IsNullOrEmpty(GameController.current.GetBio ())) {
 			// We have all of our profile information, don't substitute anything
 			bioText.text = "<b>Bio:</b> " + GameController.current.GetBio ();	
 		} else {
@@ -34,7 +33,7 @@ public class Profile : MonoBehaviour {
 			bioText.text = "<b>Bio:</b> " + "This user does not have a bio.";
 		}
 
-		if (GameController.current.GetUserGroup () != "" && GameController.current.GetUserGroup () != null) {
+		if (string.IsNullOrEmpty(GameController.current.GetUserGroup ())) {
 			// We have all of our profile information, don't substitute anything
 			userGroupText.text = GameController.current.GetUserGroup () + "\n(" + GameController.current.GetUserID () + ")";
 		} else {
@@ -43,7 +42,7 @@ public class Profile : MonoBehaviour {
 		}
 
 		//TODO:
-		string filePath = System.IO.Path.Combine ( SaveLoad.ImagesBasePath(), GameController.current.GetUsername() + ".png" );
+		string filePath = Path.Combine ( SaveLoad.ImagesBasePath(), GameController.current.GetUsername() + ".png" );
 
 		Texture2D ppT = LoadTextureFromFile (filePath);
 		if (ppT != null) {

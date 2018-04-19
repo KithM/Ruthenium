@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.Xml.Serialization;
+﻿using System.Xml.Serialization;
 using System.IO;
 using UnityEngine;
 
@@ -11,7 +9,7 @@ public class SaveLoad : MonoBehaviour {
 		// Check to see if the save file already exists
 		// if so ask for confirmation
 
-		string fileName = "data";//gameObject.GetComponentInChildren<InputField> ().text;
+		string fileName = "data";
 
 		// TODO: Is the fileName valid? i.e. ban path delimiters? (\ / : . ?) etc
 
@@ -20,7 +18,7 @@ public class SaveLoad : MonoBehaviour {
 		// In the end we are looking for something that is looking like this
 		// C:\Users\username\ApplicationData\Orion Games\Space Builder\Saves\SaveGame123.sav
 
-		string filePath = System.IO.Path.Combine ( FileSaveBasePath(), fileName + ".ruth" );
+		string filePath = Path.Combine ( FileSaveBasePath(), fileName + ".ruth" );
 
 		// At this point, filePath should look much like:
 		// C:\Users\username\ApplicationData\Orion Games\Space Builder\Saves\SaveGame123.sav
@@ -45,10 +43,6 @@ public class SaveLoad : MonoBehaviour {
 		writer.Close();
 
 		Debug.Log( writer.ToString() );
-
-		//PlayerPrefs.SetString("SaveGame00", writer.ToString());
-
-		// Create/overwrite the save field with the xml text
 
 		// Make sure the save folder exists
 		if( Directory.Exists(FileSaveBasePath() ) == false){
@@ -84,7 +78,7 @@ public class SaveLoad : MonoBehaviour {
 		// In the end we are looking for something that is looking like this
 		// C:\Users\username\ApplicationData\Orion Games\Space Builder\Saves\SaveGame123.sav
 
-		string filePath = System.IO.Path.Combine ( FileSaveBasePath(), fileName + ".ruth" );
+		string filePath = Path.Combine ( FileSaveBasePath(), fileName + ".ruth" );
 
 		// At this point, filePath should look much like:
 		// C:\Users\username\ApplicationData\Orion Games\Space Builder\Saves\SaveGame123.sav
@@ -94,7 +88,7 @@ public class SaveLoad : MonoBehaviour {
 			Debug.LogError ("SaveLoad::StartLoad: File doesn't exist! Creating one now.");
 
 			// Set the username and password to a default so we can save the data.ruth file
-			GameController.current.SetUsername("user" + GameController.current.userID.ToString());
+			GameController.current.SetUsername("user" + GameController.current.GetUserID());
 			GameController.current.SetPassword("password");
 
 			StartSave ();
@@ -128,13 +122,18 @@ public class SaveLoad : MonoBehaviour {
 	}
 
 	public static string FileSaveBasePath(){
-		return System.IO.Path.Combine (Application.persistentDataPath, "Data");
+		return Path.Combine (Application.persistentDataPath, DataPath() + "/databases/" + GameController.current.dataBaseName);
 	}
 	public static string ImagesBasePath(){
-		return System.IO.Path.Combine (Application.persistentDataPath, "Images");
+		return Path.Combine (Application.persistentDataPath, FileSaveBasePath() + "/images");
 	}
 	public static string FontsBasePath(){
-		return System.IO.Path.Combine (Application.persistentDataPath, "Data/fonts");
+		return Path.Combine (Application.persistentDataPath, DataPath() + "/fonts");
 	}
-
+	public static string DatabasePath(){
+		return Path.Combine (Application.persistentDataPath, DataPath() + "/databases");
+	}
+	public static string DataPath(){
+		return Path.Combine (Application.persistentDataPath, "Data");
+	}
 }

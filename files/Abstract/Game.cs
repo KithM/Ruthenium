@@ -11,12 +11,13 @@ public class Game : IXmlSerializable {
 	public string password { get; protected set; } // Our password is only filled in when we log in
 	public int userID { get; protected set; } // Our userID holds our username hash
 	public string bio { get; protected set; } // The Biography of the user, or whatever the user sets it to
-	public string userGroup { get; protected set; } // TODO: Our user group. Can only be User or Admin
+	public string userGroup { get; protected set; } // Our user group. Can only be User or Admin
 	public List<string> permissions { get; protected set; } // Our user privelages. Will hold all of our special permissions we can do when we are logged in
 
 	// Our database is filled in every time we start the game using the XML file. It holds our username and our associated password, and
 	// anything else we need for our user
 	public List<User> dataBase;
+	public string dataBaseName { get; protected set; } // The name of our currently loaded database. Used to set up our current users.
 
 	public Game (string username, string password){
 
@@ -40,7 +41,7 @@ public class Game : IXmlSerializable {
 		string xmlText = File.ReadAllText (fileName);
 		Debug.Log(xmlText);
 
-		XmlTextReader reader = new XmlTextReader( new StringReader( xmlText ) );
+		var reader = new XmlTextReader( new StringReader( xmlText ) );
 		ReadXml (reader);
 	}
 
@@ -109,15 +110,15 @@ public class Game : IXmlSerializable {
 			}
 		} else {
 			// DEFAULT (NO FILE)
-			User user1 = new User ("default", "password");
+			var user1 = new User ("default", "password");
 
-			List<string> adminperms = new List<string> ();
+			var adminperms = new List<string> ();
 			adminperms.Add ("permissions.add.self");
 			adminperms.Add ("permissions.remove.self");
 			adminperms.Add ("permissions.add.others");
 			adminperms.Add ("permissions.remove.others");
 
-			User user2 = new User ("admin", "password", "This user does not have a bio.", "Admin", adminperms);
+			var user2 = new User ("admin", "password", "This user does not have a bio.", "Admin", adminperms);
 			dataBase.Add (user1);
 			dataBase.Add (user2);
 
@@ -178,12 +179,13 @@ public class Game : IXmlSerializable {
 			// Check the user's database version. Make sure it is up to date. If not, let them know
 			string readVersion = reader.GetAttribute ("update");
 
-			if (readVersion != Version.GetVersion ().ToString() && readVersion != null && readVersion != "") {
+			if (readVersion != Version.GetVersion () && string.IsNullOrEmpty(readVersion) == false) {
 				Debug.LogError ("Game::ReadXml: Version \'<b>" + readVersion + "</b>\' is out of date. Make sure the data file is updated to most recent version.");
-				Logger.WriteLog ("Game::ReadXml: Version \'" + readVersion + "\' is out of date. Version should be update \'" + Version.GetVersion ().ToString() + "\'.");
+				Logger.WriteLog ("Game::ReadXml: Version \'" + readVersion + "\' is out of date. Version should be update \'" + Version.GetVersion () + "\'.");
 				GameController.nm.ShowNotification ("Ruthenium <b>" + readVersion + "</b> is out of date. Update to the newest version, <b>" + Version.GetVersion() + "</b>.");
 				Version.SetCurrentVersion(readVersion);
-			} else if (readVersion != null && readVersion != ""){
+
+			} else if (string.IsNullOrEmpty(readVersion) == false){
 				Debug.Log ("Game::ReadXml: Version \'<b>" + readVersion + "</b>\' loaded successfully.");
 				GameController.nm.ShowNotification ("Ruthenium <b>" + Version.GetVersion() + "</b> loaded successfully.");
 				Version.SetCurrentVersion(readVersion);
@@ -198,7 +200,7 @@ public class Game : IXmlSerializable {
 				string xmlpassword = null;
 				string xmlbio = null;
 				string xmlprivelages = null;
-				List<string> xmlpermissions = new List<string> ();
+				var xmlpermissions = new List<string> ();
 
 				if (reader.ReadToDescendant ("Username")) {
 					xmlusername = reader.ReadString ();
@@ -245,7 +247,7 @@ public class Game : IXmlSerializable {
 
 					Debug.Log ("Game::ReadXml: " + xmlpermissions.Count + " permissions loaded.");
 
-					User user = new User (xmlusername, xmlpassword, xmlbio, xmlprivelages, xmlpermissions);
+					var user = new User (xmlusername, xmlpassword, xmlbio, xmlprivelages, xmlpermissions);
 					dataBase.Add (user);
 					//Debug.Log ("Username: " + xmlusername + "\nPassword: " + reader.ReadString ());
 				}
@@ -329,6 +331,10 @@ public class Game : IXmlSerializable {
 		userID = id;
 		Debug.Log ("Game::SetUserID: Setting userID to \'<b>" + id + "</b>\'.");
 	}
+	public void SetDatabaseName(string input){
+		dataBaseName = input;
+		Debug.Log ("Game::SetUsername: Setting databaseName to \'<b>" + input + "</b>\'.");
+	}
 
 	// PERMISSIONS
 	public void SetPermissions(List<string> newpermissions){
@@ -369,11 +375,7 @@ public class Game : IXmlSerializable {
 			return;
 		}
 
-		// At this point, filePath should look much like:
-		// C:\Users\username\ApplicationData\Orion Games\Space Builder\Saves\SaveGame123.sav
-
-		StreamWriter writer1 = new StreamWriter(filePath, false);
-		//File.WriteAllText (filePath, info);
+		var writer1 = new StreamWriter(filePath, false);
 
 		if (info != null) {
 			writer1.WriteLine (info);

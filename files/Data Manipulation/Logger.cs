@@ -1,15 +1,12 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using System.IO;
-using System.Xml.Serialization;
 
 public static class Logger {
 
 	public static void WriteLog(string log){
 		// TODO: Log user actions or something similar?
 
-		string filePath = System.IO.Path.Combine ( SaveLoad.FileSaveBasePath(), "debug.log" );
+		string filePath = Path.Combine ( SaveLoad.FileSaveBasePath(), "debug.log" );
 
 		// At this point, filePath should look much like:
 		// C:\Users\username\ApplicationData\Orion Games\Space Builder\Saves\SaveGame123.sav
@@ -21,7 +18,7 @@ public static class Logger {
 	}
 
 	public static void WriteSystemInfo(){
-		string filePath = System.IO.Path.Combine ( SaveLoad.FileSaveBasePath(), "system.info" );
+		string filePath = Path.Combine ( Application.persistentDataPath, "system.info" );
 
 		StreamWriter writer = new StreamWriter(filePath, false);
 
